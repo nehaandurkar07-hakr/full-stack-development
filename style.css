@@ -1,81 +1,143 @@
 
+/* Reset default spacing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
+/* Page design */
 body {
     font-family: Arial, sans-serif;
-    background: #f3f4f6;
-    color: #333;
-    line-height: 1.6;
-}
-
-header {
-    background: #172554;
-    color: white;
+    background: linear-gradient(135deg, #dbeafe, #ede9fe);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
+}
+
+/* Main app box */
+.container {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Heading */
+h1 {
     text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 8px;
 }
 
-nav {
-    margin-top: 12px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 8px;
-}
-
-nav a:hover {
-    color: #facc15;
-}
-
-section {
-    padding: 40px 20px;
+.subtitle {
     text-align: center;
+    color: #666;
+    margin-bottom: 25px;
 }
 
-.hero {
-    background: #dbeafe;
-    padding: 65px 20px;
+/* Input form */
+#taskForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-h2 {
-    margin-bottom: 15px;
-    color: #1d4ed8;
+#taskInput {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
 }
 
+#taskInput:focus {
+    border-color: #2563eb;
+}
+
+/* Buttons */
 button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #2563eb;
-    color: white;
+    padding: 11px 14px;
     border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #1e40af;
-}
-
-footer {
-    background: #172554;
+    border-radius: 8px;
     color: white;
-    padding: 15px;
-    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-@media (max-width: 600px) {
-    nav a {
-        display: inline-block;
-        margin: 5px;
+.add-btn {
+    background: #2563eb;
+}
+
+.add-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Task list */
+#taskList {
+    list-style: none;
+}
+
+/* Each task row */
+#taskList li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.task-text {
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* Edit and delete buttons */
+.edit-btn {
+    background: #0f766e;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
+
+#taskCount {
+    margin-top: 20px;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Mobile layout */
+@media (max-width: 400px) {
+    .container {
+        padding: 18px;
+    }
+
+    #taskForm {
+        flex-wrap: wrap;
+    }
+
+    #taskInput {
+        width: 100%;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+    #taskList li {
+        flex-wrap: wrap;
     }
 }
