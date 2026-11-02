@@ -1,44 +1,130 @@
-const express = require("express");
-const app = express();
-const PORT = 3000;
 
-// JSON data read karne ke liye
-app.use(express.json());
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
 
-// Sample Contacts Data
-let contacts = [
-    { id: 1, name: "Neha", email: "neha@example.com" }
-];
+const signupTab = document.getElementById("signupTab");
+const loginTab = document.getElementById("loginTab");
 
-// 1. Home Route
-app.get("/", (req, res) => {
-    res.send("Contacts API is running successfully!");
-});
+const profileSection = document.getElementById("profileSection");
+const profileName = document.getElementById("profileName");
+const profileEmail = document.getElementById("profileEmail");
+const logoutButton = document.getElementById("logoutButton");
+const message = document.getElementById("message");
 
-// 2. GET: Sabhi contacts dekhne ke liye
-app.get("/contacts", (req, res) => {
-    res.json(contacts);
-});
+// Show a message on the page
+function showMessage(text) {
+    message.textContent = text;
+}
 
-// 3. POST: Naya contact add karne ke liye
-app.post("/contacts", (req, res) => {
-    const { name, email } = req.body;
-
-    if (!name || !email) {
-        return res.status(400).json({ message: "Name and email are required!" });
-    }
-
-    const newContact = {
-        id: contacts.length + 1,
-        name: name,
-        email: email
+// Send requests to our backend API
+async function apiRequest(url, method = "GET", data) {
+    const options = {
+        method: method,
+        credentials: "same-origin",
+        headers: {}
     };
 
-    contacts.push(newContact);
-    res.status(201).json({ message: "Contact added!", contact: newContact });
+    if (data !== undefined) {
+        options.headers["Content-Type"] = "application/json";
+        options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(url, options);
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.message || "Request failed");
+    }
+
+    return result;
+}
+
+// Switch between signup and login
+signupTab.addEventListener("click", function () {
+    signupForm.hidden = false;
+    loginForm.hidden = true;
+    profileSection.hidden = true;
+    showMessage("");
 });
 
-// Server Start
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+loginTab.addEventListener("click", function () {
+    signupForm.hidden = true;
+    loginForm.hidden = false;
+    profileSection.hidden = true;
+    showMessage("");
 });
+
+// Signup
+signupForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    try {
+        const result = await apiRequest("/api/signup", "POST", {
+            name: document.getElementById("signupName").value,
+            email: document.getElementById("signupEmail").value,
+            password: document.getElementById("signupPassword").value
+        });
+
+        showMessage(result.message);
+        signupForm.reset();
+
+        signupForm.hidden = true;
+        loginForm.hidden = false;
+    } catch (error) {
+        showMessage(error.message);
+    }
+});
+
+// Login
+loginForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    try {
+        const result = await apiRequest("/api/login", "POST", {
+            email: document.getElementById("loginEmail").value,
+            password: document.getElementById("loginPassword").value
+        });
+
+        loginForm.reset();
+        showMessage(result.message);
+
+        await loadProfile();
+    } catch (error) {
+        showMessage(error.message);
+    }
+});
+
+// Load protected profile
+async function loadProfile() {
+    try {
+        const user = await apiRequest("/api/profile");
+
+        profileName.textContent = "Name: " + user.name;
+        profileEmail.textContent = "Email: " + user.email;
+
+        signupForm.hidden = true;
+        loginForm.hidden = true;
+        profileSection.hidden = false;
+    } catch (error) {
+        profileSection.hidden = true;
+    }
+}
+
+// Logout
+logoutButton.addEventListener("click", async function () {
+    try {
+        const result = await apiRequest("/api/logout", "POST");
+
+        profileSection.hidden = true;
+        signupForm.hidden = true;
+        loginForm.hidden = false;
+
+        showMessage(result.message);
+    } catch (error) {
+        showMessage(error.message);
+    }
+});
+
+// Check whether a session already exists
+loadProfile();

@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="container">
+        <h1>My Account</h1>
+        <p class="subtitle">Create an account or log in</p>
+
+        <div class="tabs">
+            <button type="button" id="signupTab">Sign Up</button>
+            <button type="button" id="loginTab">Login</button>
+        </div>
+
+        <form id="signupForm">
+            <h2>Create Account</h2>
+
+            <label for="signupName">Full Name</label>
+            <input id="signupName" type="text"
+                   placeholder="Enter your name" required>
+
+            <label for="signupEmail">Email</label>
+            <input id="signupEmail" type="email"
+                   placeholder="Enter your email" required>
+
+            <label for="signupPassword">Password</label>
+            <input id="signupPassword" type="password"
+                   minlength="8" maxlength="72"
+                   placeholder="At least 8 characters" required>
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <form id="loginForm" hidden>
+            <h2>Welcome Back</h2>
+
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email"
+                   placeholder="Enter your email" required>
+
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password"
+                   placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <section id="profileSection" hidden>
+            <h2>My Profile</h2>
+            <p id="profileName"></p>
+            <p id="profileEmail"></p>
+            <button type="button" id="logoutButton">Logout</button>
+        </section>
+
+        <p id="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="script.js"></script> 
+</body>
+</html>
